@@ -1,0 +1,53 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+
+
+-- -----------------------------------------------------
+-- Table `point`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `point` (
+  `point_id` INT NOT NULL AUTO_INCREMENT ,
+  `location` POINT NULL ,
+  `elevation` INT NOT NULL DEFAULT 0 ,
+  PRIMARY KEY (`point_id`) )
+ENGINE = MyISAM;
+
+
+-- -----------------------------------------------------
+-- Table `poi`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `poi` (
+  `poi_id` INT NOT NULL AUTO_INCREMENT ,
+  `point_id` INT NOT NULL ,
+  `title` VARCHAR(100) NULL ,
+  `url` VARCHAR(250) NULL ,
+  PRIMARY KEY (`poi_id`, `point_id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `map`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `map` (
+  `map_id` INT NOT NULL AUTO_INCREMENT ,
+  `utente_id` INT NULL ,
+  `name` VARCHAR(45) NULL ,
+  PRIMARY KEY (`map_id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `poi_has_map`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `poi_has_map` (
+  `poi_poi_id` INT NOT NULL ,
+  `map_map_id` INT NOT NULL ,
+  PRIMARY KEY (`poi_poi_id`, `map_map_id`) )
+ENGINE = InnoDB;
+
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
