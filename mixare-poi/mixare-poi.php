@@ -14,10 +14,11 @@ define('MIXAREPOI_DIR', plugin_dir_path(__FILE__));
 define('MIXAREPOI_URL', plugin_dir_url(__FILE__));
 define('MIXAREPOI__FILE__', ABSPATH . PLUGINDIR . '/mixare-poi/mixare-poi.php');
 
+
 //installing the necessary options -> install/installer.php
 require_once(MIXAREPOI_DIR.'/install/installer.php');
 
-
+require_once MIXAREPOI_DIR.'/mixpoi-menu-manager.php';
 
 //add Actions
 add_action('admin_menu', 'mixareManagementMenu');
@@ -27,7 +28,9 @@ add_action('widgets_init', create_function('', 'return register_widget("MixarePO
 add_action('get_header', 'checkPageTitle');
 
 // add filter
-add_filter('the_content', 'checkPageSpacehold');
+//checking page for filter hook -> filter/page_filter.php
+include_once(MIXAREPOI_DIR.'/filter/page_filter.php');
+
 
 
 //loading scripts maps
@@ -65,8 +68,7 @@ function printPageCSS(){
 //creating the Widget for the Sidebar -> widget/widget.php		
 include_once('widget/widget.php');
 
-//checking page for filter hook -> filter/page_filter.php
-include_once('filter/page_filter.php');
+
 
 //checking page for title hook -> filter/title_filter.php
 include_once('filter/title_filter.php');
