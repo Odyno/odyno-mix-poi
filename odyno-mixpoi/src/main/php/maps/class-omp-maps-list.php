@@ -79,7 +79,7 @@ if (!class_exists('OMP_Maps_List')) {
 
       //Build row actions
       $actions = array(
-          'poi' => sprintf('<a href="?page=%s&action=%s&map_id=%s">Manage POI</a>', 'odyno-mixpoi/maps/poi/poi-index.php', 'poi', $item['map_id']),
+          'poi' => sprintf('<a href="?page=%s&action=%s&map_id=%s">Manage POI</a>', 'odyno-mixpoi/maps/poi-index.php', 'list', $item['map_id']),
           'edit' => sprintf('<a href="?page=%s&action=%s&map_id=%s">Edit</a>', 'odyno-mixpoi/maps/maps-mng.php', 'edit', $item['map_id']),
           'delete' => sprintf('<a href="?page=%s&action=%s&map_id=%s">Delete</a>', 'odyno-mixpoi/maps/maps-mng.php', 'delete', $item['map_id']),
       );

@@ -9,7 +9,7 @@
     </parent>
     
     <properties>
-        <phpmaven.release.number>2.0.2</phpmaven.release.number>
+        <phpmaven.release.number>2.0-SNAPSHOT</phpmaven.release.number>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <phpunit.version>3.6.10</phpunit.version>
     </properties>
@@ -36,7 +36,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.2</version>
                 <inherited>true</inherited>
                 <configuration>
                     <reportPlugins>

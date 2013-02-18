@@ -23,6 +23,6 @@ $mapsManager->applayAction($_REQUEST);
     <p>This is a list of your maps</p>
   </div>
 
-  <?php $mapsTable->show("fuel-table") ?>
+  <?php $mapsTable->show("map-table") ?>
 
 </div>
