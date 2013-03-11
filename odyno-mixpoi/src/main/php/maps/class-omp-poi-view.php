@@ -9,6 +9,8 @@ if (!class_exists('OMP_Poi_View')) {
     {
 
 
+
+
         static function get_poi_list($map_id)
         {
             global $wpdb;

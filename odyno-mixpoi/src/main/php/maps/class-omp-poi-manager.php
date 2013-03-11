@@ -51,6 +51,7 @@ if (!class_exists('OMP_Poi_Manager')) {
       $rows_affected = $this->wpdb->insert($this->databasePre . "map", array('name'=>$commands['name'],'map_id'=>@$commands['map_id'], 'utente_id' => get_current_user_id() ));
     }
 
+
   }
 
 }
