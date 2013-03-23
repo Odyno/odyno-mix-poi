@@ -8,7 +8,38 @@ if (!class_exists('OMP_Poi_View')) {
     class OMP_Poi_View
     {
 
+        static function get_poi_list_from_point($arrayOfPointId = array(), $map_id=null){
+            $pointTofind = "";
+            foreach ($arrayOfPointId as $point) {
+                $pointTofind .= "$point,";
+            }
 
+            $pointTofind = rtrim($pointTofind, ',');
+            $whereCondition = " `pointid` in (" . $pointTofind . ") ";
+
+
+            $out='
+SELECT
+  map.map_map_id     as map_id,
+  post.post_post_id  as post_id,
+  X(loc.location)    as lat,
+  Y(loc.location)    as lng ,
+  loc.elevation      as elevation,
+  poi.title          as title,
+  poi.url            as url
+FROM
+  wp_omp_point as loc ,
+  wp_omp_poi as poi ,
+  wp_omp_poi_has_map as map ,
+  wp_omp_post_has_point as post
+where
+   poi.point_id = loc.point_id
+   and poi.poi_id = map.poi_poi_id
+   and post.point_point_id = loc.point_id
+   and loc.point_id in ( 32, 33 , 34 )
+   ';
+
+        }
 
 
         static function get_poi_list($map_id)

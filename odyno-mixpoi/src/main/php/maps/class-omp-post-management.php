@@ -27,17 +27,19 @@ if (!class_exists("OMP_Post_Management")) :
         static function get_point_of_post($post_id)
         {
 
+
             global $wpdb;
             $tablePoiHasMap = $wpdb->prefix . "omp_post_has_point";
             $listOfPoiId = "SELECT point_point_id FROM `" . $tablePoiHasMap . "` where post_post_id = $post_id ";
             $rowDatas = $wpdb->get_results($listOfPoiId, ARRAY_A);
 
-
             if (isset($rowDatas[0])) {
-                $pointData = OMP_Location_Manager::get($rowDatas[0]['point_id']);
-                $row['lat'] = $pointData['lat'];
-                $row['lng'] = $pointData['lng'];
-                $row['elev'] = $pointData['elev'];
+                $pointData = OMP_Location_Manager::get($rowDatas[0]['point_point_id']);
+                $row['lat'] = $pointData[0]['lat'];
+                $row['lng'] = $pointData[0]['lng'];
+                $row['elev'] = $pointData[0]['elev'];
+
+
             } else {
                 $row['lat'] = 0.0;
                 $row['lng'] = 0.0;
@@ -48,21 +50,21 @@ if (!class_exists("OMP_Post_Management")) :
 
         static function unlink_to_post_action($post_id)
         {
+//            wp_die("B- $post_id");
             global $wpdb;
-
             $point_id = self::get_point_of_post($post_id);
             $table = $wpdb->prefix . "omp_post_has_point";
-            $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE post_post_id = %s", $post_id));
+            $wpdb->query($wpdb->prepare("DELETE FROM %s WHERE post_post_id = %s",$table, $post_id));
             OMP_Location_Manager::delete($point_id);
 
         }
 
         static function link_to_post_action($post_id, $lat, $lng)
         {
-            global $wpdb;
-            $point_point_id = OMP_Location_Manager::save(null, $lat, $lng, 0);
-            $rows_affected = $wpdb->insert($wpdb->prefix . "omp_post_has_point",
-                array('point_point_id' => $point_point_id, 'post_post_id' => $post_id));
+           self::unlink_to_post_action($post_id);
+           $point_point_id =OMP_Location_Manager::save($lat, $lng, null);
+           global $wpdb;
+           $rows_affected = $wpdb->insert($wpdb->prefix . "omp_post_has_point", array('point_point_id' => $point_point_id, 'post_post_id' => $post_id));
         }
 
 
