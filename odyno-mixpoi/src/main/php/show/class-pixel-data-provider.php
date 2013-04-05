@@ -18,9 +18,8 @@
 
 if (!class_exists("Pixel_Data_Provider")) :
 
-    require_once(ODYNOMIXPOI_SHOW_DIR."/../maps/class-pixel.php");
-    require_once(ODYNOMIXPOI_SHOW_DIR."/../maps/class-omp-location-manager.php");
-    require_once(ODYNOMIXPOI_SHOW_DIR."/../maps/class-omp-poi-view.php");
+    require_once ODYNOMIXPOI_SHOW_DIR."/../pois/class-omp-location-manager.php";
+
 
     class Pixel_Data_Provider
     {
@@ -99,7 +98,7 @@ if (!class_exists("Pixel_Data_Provider")) :
          * @param type $dis_in_km
          * @return \Pixel_Meteo
          */
-        private function _getData($outpoints,$map_id) {
+        private function _getData($outpoints, $map_id=null) {
             $out = array();
 
             $poiManager= new OMP_Poi_View();

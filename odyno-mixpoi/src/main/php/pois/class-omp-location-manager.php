@@ -18,6 +18,8 @@
 
 if (!class_exists("OMP_Location_Manager")) :
 
+    require_once ODYNOMIXPOI_DIR . "/pojo/class-omp-point.php";
+
     class OMP_Location_Manager
     {
 
@@ -34,12 +36,17 @@ if (!class_exists("OMP_Location_Manager")) :
             return $wpdb->get_results($sql, ARRAY_A);
         }
 
+        public static function getPoint($lat, $lng)
+        {
+            self::getList($lat, $lng, 1);
+        }
 
-        public static function getList($lat, $lng)
+
+        public static function getList($lat, $lng, $num = null)
         {
             $filter[0] = "X(location) = " . $lat;
             $filter[1] = "Y(location) = " . $lng;
-            return self::getListWithRowWhere($filter);
+            return self::getListWithRowWhere($filter, $num);
         }
 
         /**
@@ -50,7 +57,7 @@ if (!class_exists("OMP_Location_Manager")) :
          * @param int limit
          * @return array $temperaturaList
          */
-        public static function getListWithRowWhere($fcv_array = array())
+        public static function getListWithRowWhere($fcv_array = array(), $num = null)
         {
             global $wpdb;
             $table = $wpdb->prefix . "omp_point";
@@ -67,6 +74,9 @@ if (!class_exists("OMP_Location_Manager")) :
                 }
 
                 $sql .= $query;
+                if ($num == null) {
+                    $sql .= ' LIMIT 0, ' . $num;
+                }
             }
             return $wpdb->get_results($sql, ARRAY_A);
         }
@@ -130,46 +140,23 @@ FROM `$table` WHERE
          * Saves the object to the database
          * @return integer $puntoId
          */
-        public static function save($lat, $long, $ele_in_km = 0, $point_id = null, $soglia_in_km = 0.10)
+        public static function save($lat, $lng, $ele_in_km = 0)
         {
             global $wpdb;
             $table = $wpdb->prefix . "omp_point";
-            $returnedID=null;
+            $sql=$wpdb->prepare(
+                "insert into $table ( location  , elevation  ) values ( Point( %f , %f ) , %d )",
+                array(
+                    $lat,
+                    $lng,
+                    $ele_in_km
+                )
+            );
 
-            //salvo per POINT ID
-            if ($point_id != null) {
-                //cerco il punto
-                $row = self::get($point_id);
-                if (isset($row) && count($row) > 0) {
-                    $sql = "update `$table` set `location`= Point( $lat , $long ), `elevation` = $ele_in_km  where `point_id`= '$point_id' ";
-                    $wpdb->query($sql);
-                    $returnedID =$wpdb->insert_id;
-                }else{
-                  //non lo trovo errore
-                  $returnedID=null;
-                }
-            } else {
-          /*      //cerco per solgia
-                if (soglia_in_km > 0) {
-                    $points=self::getPoints($lat, $long, soglia_in_km);
-                     if (isset($points) && is_array($points)){
-                          foreach($points as $point){
-                              if ($point['elevation']== $ele_in_km ){
-                                  $returnedID = $point['point_id'];
-                              }
-                          }
-                     }
-                }      */
-                if ($returnedID == null || soglia_in_km <= 0) {
-                    $sql = "insert into `$table` (`location` ,`elevation` ) values ( Point( $lat , $long ) , $ele_in_km )";
-                    $wpdb->query($sql);
-                    $returnedID =$wpdb->insert_id;
-                }
-            }
+             $wpdb->query($sql);
+            $out=$wpdb->insert_id;
 
-            if ($returnedID == null ) trigger_error("SAVE POINT ERROR!");
-            return   $returnedID;
-
+            return $out;
         }
 
         /**

@@ -21,6 +21,6 @@ require_once(ODYNOMIXPOI_DIR.'/install/installer.php');
 
 require_once(ODYNOMIXPOI_DIR.'/omp-menu-manager.php');
 
-require_once(ODYNOMIXPOI_DIR.'/omp-metabox-manager.php');
+require_once(ODYNOMIXPOI_DIR . '/omp-add-position-metabox.php');
 
 ?>

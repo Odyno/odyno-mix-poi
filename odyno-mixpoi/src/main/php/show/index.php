@@ -1,8 +1,11 @@
 <?php
 
-require_once  '../../../wp-config.php';
 
-define('ODYNOMIXPOI_SHOW_DIR', ABSPATH . PLUGINDIR . '/odyno-mixpoi/show/');
+require_once ("/Workspaces/WorkspaceSiti/www/www.staniscia.net/htdocs/wp/wp-config.php");
+
+
+
+define('ODYNOMIXPOI_SHOW_DIR', dirname(__FILE__));
 
 /*
   $req_dump = print_r($_REQUEST, TRUE);
@@ -10,9 +13,6 @@ define('ODYNOMIXPOI_SHOW_DIR', ABSPATH . PLUGINDIR . '/odyno-mixpoi/show/');
   fwrite($fp, $req_dump);
   fclose($fp);
   exit;
-$lat = 41.799002766525;
-$lon = 12.428941906807;
-$dis_in_km = 80; //km
 */
 
 if (isset($_REQUEST['render']) && $_REQUEST['render'] == "1") {
@@ -39,10 +39,12 @@ if (isset($_REQUEST['render']) && $_REQUEST['render'] == "1") {
     require_once(ODYNOMIXPOI_SHOW_DIR . '/class-panoramio-formatter.php');
     $jf = new  Panoramio_Formatter();
 } else {
-
-
     require_once(ODYNOMIXPOI_SHOW_DIR . '/class-mixare-formatter.php');
     $jf = new  Mixare_Formatter();
+    /*
+    http://itaca/staniscia/wp/wp-content/plugins/odyno-mixpoi/show/?latitude=41.88688&longitude=12.613499&radius=80
+    itaca/staniscia/wp/wp-content/plugins/odyno-mixpoi/show/?latitude=12.613499&longitude=41.88688&radius=80
+    */
 }
 
 

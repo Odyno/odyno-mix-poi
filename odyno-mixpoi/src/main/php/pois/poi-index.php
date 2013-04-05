@@ -5,8 +5,8 @@
  *
  */
 
-include(  ODYNOMIXPOI_DIR . 'maps/class-omp-poi-list.php');
-include(  ODYNOMIXPOI_DIR . 'maps/class-omp-maps-view.php');
+include(ODYNOMIXPOI_DIR . 'maps/class-omp-poi-list.php');
+include(ODYNOMIXPOI_DIR . 'maps/class-omp-maps-view.php');
 
 
 

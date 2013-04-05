@@ -24,12 +24,16 @@ if (!class_exists("Odynomixpoi_db")) :
         static function DDLs($databasePre="") {
             $dbSchema = array(
                 $databasePre . "omp_point" => "CREATE TABLE `" . $databasePre . "omp_point` ( `point_id` INT NOT NULL AUTO_INCREMENT , `location` POINT NULL , `elevation` INT NOT NULL DEFAULT 0 , PRIMARY KEY (`point_id`) ) ",
-                $databasePre . "omp_poi" => "CREATE TABLE `" . $databasePre . "omp_poi` ( `poi_id` INT NOT NULL AUTO_INCREMENT , `point_id` INT NOT NULL , `title` VARCHAR(100) NULL , `url` VARCHAR(250) NULL , PRIMARY KEY (`poi_id`, `point_id`) ) ",
-                $databasePre . "omp_map" => "CREATE TABLE `" . $databasePre . "omp_map` ( `map_id` INT NOT NULL AUTO_INCREMENT , `utente_id` INT NULL , `name` VARCHAR(45) NULL , PRIMARY KEY (`map_id`) ) ",
-                $databasePre . "omp_poi_has_map" => "CREATE TABLE `" . $databasePre . "omp_poi_has_map` ( `poi_poi_id` INT NOT NULL , `map_map_id` INT NOT NULL , PRIMARY KEY (`poi_poi_id`, `map_map_id`) ) ",
-                $databasePre . "omp_post_has_point" => "CREATE TABLE `" . $databasePre . "omp_post_has_point` ( `point_point_id` INT NOT NULL , `post_post_id` INT NOT NULL , PRIMARY KEY (`point_point_id`, `post_post_id`) ) ",
+                $databasePre . "omp_poi" => "CREATE TABLE `" . $databasePre . "omp_poi` ( `poi_id` INT NOT NULL AUTO_INCREMENT , `point_id` INT NOT NULL , `title` VARCHAR(100) NULL , `url` VARCHAR(250) NULL , `post_id` INT , PRIMARY KEY (`poi_id`, `point_id`) ) ",
+                $databasePre . "omp_map" => "CREATE TABLE `" . $databasePre . "omp_map` ( `map_id` INT NOT NULL AUTO_INCREMENT , `utente_id` INT NULL , `post_id` INT NOT NULL, `name` VARCHAR(45) NULL , PRIMARY KEY (`map_id`) ) ",
+                $databasePre . "omp_poi_has_map" => "CREATE TABLE `" . $databasePre . "omp_poi_has_map` ( `poi_poi_id` INT NOT NULL , `map_map_id` INT NOT NULL , PRIMARY KEY (`poi_poi_id`, `map_map_id`) ) "
             );
             return $dbSchema;
+        }
+
+        static function DataFill($databasePre="") {
+            $dbFill = null;
+            return $dbFill;
         }
 
     }

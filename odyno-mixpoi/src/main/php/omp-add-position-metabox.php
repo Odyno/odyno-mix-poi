@@ -1,6 +1,23 @@
 <?php
+/*
+Copyright 2012  Alessandro Staniscia ( alessandro@staniscia.net )
 
-require_once ODYNOMIXPOI_DIR . "/maps/class-omp-post-management.php";
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License, version 2, as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
+
+require_once ODYNOMIXPOI_DIR . "/pois/class-omp-post-manager.php";
 
 /* Define the custom box */
 add_action('add_meta_boxes', 'omp_add_location_box');
@@ -31,10 +48,17 @@ function omp_location_box_html_content($post)
     wp_nonce_field(ODYNOMIXPOI__FILE__, 'omp_nonce_location');
 
     // The actual fields for data entry
-    $formData = OMP_Post_Management::get_point_of_post($post->ID);
-
-    $out  = "<label for=\"lng_id\">Longitude</label><input type=\"text\" id=\"lng_id\" name=\"lng\" value=\"" . esc_attr($formData['lng']) . "\" size=\"25\" /><br/>";
-    $out .= "<label for=\"lat_id\">Latitude</label><input type=\"text\" id=\"lat_id\" name=\"lat\" value=\"" . esc_attr($formData['lat']) . "\" size=\"25\" />";
+    $point = OMP_Post_Manager::get_poi_of_post($post->ID);
+    $out ="";
+    $out .= "<img src=\"http://qrfree.kaywa.com/?l=1&s=8&d=http%3A%2F%2Fitaca%2Fstaniscia%2Fwp%2Fwp-content%2Fplugins%2Fodyno-mixpoi%2Fshow%2F\" alt=\"QRCode\" width='200px'/><br>";
+    $out .= "<a href=\"http://itaca/staniscia/wp/wp-content/plugins/odyno-mixpoi/show/\">testHere</a><br>" ;
+    $out .= "<label for=\"lng_id\">Longitude</label><input type=\"text\" id=\"lng_id\" name=\"lng\" value=\"" . esc_attr($point->lng) . "\" size=\"25\" /><br/>";
+    $out .= "<label for=\"lat_id\">Latitude</label><input type=\"text\" id=\"lat_id\" name=\"lat\" value=\"" . esc_attr($point->lat) . "\" size=\"25\" />";
+    if ($point->id == null ){
+        $out .= "<br/><input  type=\"checkbox\" id=\"is_pos_id\" name=\"is_pos\" value=\"true\" checked/><label for=\"is_pos_id\">Disabled</label>";
+    }else{
+        $out .= "<br/><input  type=\"checkbox\" id=\"is_pos_id\" name=\"is_pos\" value=\"true\" /><label for=\"is_pos_id\">Disabled</label>";
+    }
     echo $out;
 }
 
@@ -66,32 +90,19 @@ function omp_save_location_box($post_id){
         }
     }
 
-
-
     //sanitize user input
     $post_ID=$_REQUEST['post_ID'];
     $lng = sanitize_text_field($_REQUEST['lng']);
     $lat = sanitize_text_field($_REQUEST['lat']);
 
-    set_omp_mixmap_form_data($post_ID, $lng, $lat);
+    OMP_Post_Manager::unlink_to_post_action($post_ID);
+    if (!isset($_REQUEST['is_pos'])){
+        OMP_Post_Manager::link_to_post_action($post_ID, $lat, $lng);
+    }
 
     return $post_id;
-
 }
 
-
-function set_omp_mixmap_form_data($post_ID, $lng, $lat)
-{
-
-
-    if (isset($lng) AND isset($lat)) {
-        //wp_die("CAZZO2");
-       OMP_Post_Management::link_to_post_action($post_ID, $lat, $lng);
-    } else {
-        //wp_die("CAZZO1");
-        OMP_Post_Management::unlink_to_post_action($post_ID);
-    }
-}
 
 
 

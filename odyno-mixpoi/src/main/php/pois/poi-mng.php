@@ -7,7 +7,7 @@ if (!function_exists('add_action')) {
 
 
 
-require_once ODYNOMIXPOI_DIR."/maps/class-omp-poi-view.php";
+require_once ODYNOMIXPOI_DIR . "/maps/class-omp-poi-view.php";
 
 function get_poi_form_data($poi_id=null, $map_id=null,$action=null) {
 
